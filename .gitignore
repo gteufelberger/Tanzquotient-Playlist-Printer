@@ -1,0 +1,9 @@
+# Rendered PDF
+main.pdf
+
+# Credentials
+src/scripts/credentials.toml
+
+# Cache and Python environmnemt
+src/scripts/.cache
+src/scripts/.venv/*

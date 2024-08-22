@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "tanzquotient-playlist-verifier"
+version = "0.1.0"
+description = ""
+authors = ["Georg Teufelberger <tgeorg@student.ethz.ch>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+spotipy = "^2.24.0"
+pandas = "^2.2.2"
+markdown-table = "^2020.12.3"
+markdown-analysis = "^0.0.5"
+mistune = "^3.0.2"
+markdown-it-py = "^3.0.0"
+matplotlib = "^3.9.0"
+networkx = "^3.3"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+ipykernel = "^6.29.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
