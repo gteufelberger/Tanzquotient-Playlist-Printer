@@ -89,10 +89,15 @@
 )
 #show table.cell.where(y: 0): strong
 #table(
-  fill: (_, y) =>
-    if y == 0 { rgb("d9d9d9") }
-    else if calc.even(y) { rgb("f3f3f3") },
+  fill: (x, y) =>
+    if x != 0 {
+      if y == 0 { rgb("d9d9d9") }
+      else if calc.even(y) { rgb("f3f3f3") }
+    },
   inset: 7pt,
+  stroke: (x, y) =>
+    if x == 0 { none }
+    else { 1pt },
   columns:
     (
       auto,
