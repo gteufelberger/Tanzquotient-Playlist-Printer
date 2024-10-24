@@ -102,7 +102,7 @@
       auto,
     ),
     [Time],
-    // [idx], // Comment in for Playlist index
+    // [Nr.], // Comment in for Playlist index
     [Title],
     [Artist],
     [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style!]],
