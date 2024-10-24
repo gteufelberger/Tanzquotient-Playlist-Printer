@@ -105,7 +105,7 @@
     [Time],
     [Title],
     [Artist],
-    [Dance],
+    [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style!]],
   ..results.map(
       v => (
         // [#v.at("index")], // Comment in for Playlist index
