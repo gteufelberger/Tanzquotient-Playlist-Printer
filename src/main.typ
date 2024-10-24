@@ -100,9 +100,11 @@
       auto,
       auto,
       auto,
+      auto,
     ),
     [Time],
     // [Nr.], // Comment in for Playlist index
+    [Duration],
     [Title],
     [Artist],
     [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style!]],
@@ -110,6 +112,7 @@
       v => (
         [#v.at("Start Time")],
         // [#v.at("index")], // Comment in for Playlist index
+        [#v.at("Duration (min:sec)")],
         [#v.at("Track Name")],
         [#v.at("Artists")],
         [#v.at("Suggested Dance")],
