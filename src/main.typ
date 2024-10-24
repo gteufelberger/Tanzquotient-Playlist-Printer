@@ -95,21 +95,21 @@
   inset: 7pt,
   columns:
     (
+      auto,
       // auto, // Comment in for Playlist index
       auto,
       auto,
       auto,
-      auto,
     ),
-    // [idx], // Comment in for Playlist index
     [Time],
+    // [idx], // Comment in for Playlist index
     [Title],
     [Artist],
     [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style!]],
   ..results.map(
       v => (
-        // [#v.at("index")], // Comment in for Playlist index
         [#v.at("Start Time")],
+        // [#v.at("index")], // Comment in for Playlist index
         [#v.at("Track Name")],
         [#v.at("Artists")],
         [#v.at("Suggested Dance")],
