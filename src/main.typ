@@ -4,8 +4,11 @@
 #let csv_file = "scripts/open-dancing-playlist.csv" // Update if necessary
 #let playlist_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" // Replace with link to actual playlist
 
+#let default_left_margin = 71pt // Left margin size in pt for A4
+#let left_margin_change = 36pt // Width of first column
 
 #set page(
+  margin: (left: default_left_margin - left_margin_change),
   footer: context [
     #set align(center)
     #counter(page).display(
@@ -74,8 +77,13 @@
   ]
 }))
 
-= Open Dancing DATE-HERE
-== Playlist by AUTHOR-HERE
+#pad(
+  x: left_margin_change,
+  [
+    = Open Dancing DATE-HERE
+    == Playlist by AUTHOR-HERE
+  ],
+)
 
 // Set text size a bit smaller to fit everything
 #set text(
@@ -125,34 +133,37 @@
     ).flatten(),
 )
 
-// QR Code
-#stack(
-  dir: ltr,
-  spacing: 8pt,
-  tiaoma.barcode(
-    playlist_url,
-    "QRCode",
-    options: (
-      scale: 1.5,
+#pad(
+  x: left_margin_change,
+  // QR Code
+  stack(
+    dir: ltr,
+    spacing: 8pt,
+    tiaoma.barcode(
+      playlist_url,
+      "QRCode",
+      options: (
+        scale: 1.5,
+      ),
     ),
-  ),
-  text(
-    [
-      #text(
-        size: 20pt,
-        [*Playlist*]
-      )
-      \
-      \
-      #text(
-        size: 13pt, // Slightly larger link text
-        fill: blue,
-        [
-          #underline[
-            #link(playlist_url)
+    text(
+      [
+        #text(
+          size: 20pt,
+          [*Playlist*]
+        )
+        \
+        \
+        #text(
+          size: 13pt, // Slightly larger link text
+          fill: blue,
+          [
+            #underline[
+              #link(playlist_url)
+            ]
           ]
-        ]
-      )
-    ]
+        )
+      ]
+    ),
   ),
 )
