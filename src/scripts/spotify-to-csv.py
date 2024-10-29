@@ -167,7 +167,7 @@ def markdown_to_dict(text):
     # Find all markdown links in the text
     links = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", text)
     # Create a dictionary from the links
-    return {display: url for display, url in links}
+    return {display_text: url for display_text, url in links}
 
 
 def extract_tags(text: str):
