@@ -218,17 +218,39 @@ playlist_df["Suggested Dance"] = playlist_df.apply(
 
 
 # Function to calculate start times
-def calculate_start_times(df, start_time):
-    """Calculate time at which each song starts playing based on playtime and initial start time"""
+def calculate_start_times_aligned(df, start_time):
+    """
+    Calculate time at which each song starts playing based on playtime and initial start time,
+    but only annotate times that align with 15-minute increments.
+    Always print the first and last song times.
+    """
+
     current_time = start_time
     start_times = []
+
+    # Ensure the first 15-minute mark aligns to `:00`, `:15`, `:30`, `:45`
+    next_15_min_mark = (
+        current_time + timedelta(minutes=(15 - current_time.minute % 15))
+    ).replace(second=0, microsecond=0)
 
     for index, row in df.iterrows():
         print(f"{index=}")
         if index == 14:
             current_time += timedelta(milliseconds=5 * 60 * 1000)
 
-        start_times.append(current_time.strftime("%H:%M"))
+        # Always print the first and last song's start time
+        if index == 0 or index == len(df) - 1:
+            start_times.append(current_time.strftime("%H:%M"))
+        # Print times that align with 15-minute marks
+        elif current_time >= next_15_min_mark:
+            start_times.append(next_15_min_mark.strftime("%H:%M"))
+
+            # Move to the next 15-minute mark
+            next_15_min_mark += timedelta(minutes=15)
+        else:
+            start_times.append("")  # Leave blank if not on a 15-minute mark
+
+        # Update current time based on song duration
         duration_ms = row["Duration (ms)"]
         current_time += timedelta(milliseconds=duration_ms)
 
@@ -236,7 +258,7 @@ def calculate_start_times(df, start_time):
 
 
 # Calculate start times
-playlist_df["Start Time"] = calculate_start_times(playlist_df, open_dancing_start_time)
+playlist_df["Start Time"] = calculate_start_times_aligned(playlist_df, open_dancing_start_time)
 
 # # %%
 # Save to CSV
