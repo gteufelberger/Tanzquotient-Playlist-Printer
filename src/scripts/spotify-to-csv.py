@@ -21,6 +21,21 @@ sp = spotipy.Spotify(
     )
 )
 
+
+def playlist_url_to_id(spotify_link: str):
+    """Extracts the playlist ID from the URL"""
+    if match := re.match(
+        r"https://open\.spotify\.com/playlist/([a-zA-Z0-9]+)", spotify_link
+    ):
+        playlist_id = match.groups()[0]
+        return playlist_id
+    else:
+        raise ValueError("Expected format: https://open.spotify.com/playlist/...")
+
+
+# playlist_id = playlist_url_to_id(
+#     "https://open.spotify.com/REPLACE-ME"
+# )
 playlist_id = "REPLACE-ME"
 output_csv_name = "open-dancing-playlist.csv"
 markdown_notes_filename = "notes.md"
