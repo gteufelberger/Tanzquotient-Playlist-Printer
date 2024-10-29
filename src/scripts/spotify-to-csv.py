@@ -34,7 +34,7 @@ def playlist_url_to_id(spotify_link: str):
 
 
 # playlist_id = playlist_url_to_id(
-#     "https://open.spotify.com/REPLACE-ME"
+#     "https://open.spotify.com/playlist/REPLACE-ME"
 # )
 playlist_id = "REPLACE-ME"
 output_csv_name = "open-dancing-playlist.csv"
