@@ -228,7 +228,7 @@ def find_dance_via_link(dances_df, key, link):
     return ""
 
 
-def find_dance_for_song(row):
+def find_dance_for_song(row, dances_df):
 
     # Get dance based on Spotify link
     result_from_link = find_dance_via_link(
@@ -256,7 +256,7 @@ def find_dance_for_song(row):
 
 # Add a new column for the dance name
 playlist_df["Suggested Dance"] = playlist_df.apply(
-    lambda row: find_dance_for_song(row),
+    lambda row: find_dance_for_song(row, dances_df),
     axis=1,
 )
 
