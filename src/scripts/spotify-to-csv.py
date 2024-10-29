@@ -185,6 +185,24 @@ for dance_name, dance_df in dance_dataframes.items():
     dance_df["Tags"] = dance_df["Tags"].apply(extract_tags)
 
 
+def combine_dataframes_add_key_as_column(dance_dataframes):
+    """Combine dataframes from dictionary into single one with extra column for the key"""
+    df_list = []
+
+    # Iterate over the dictionary and add the key as a new column
+    for key, df in dance_dataframes.items():
+        df["Dance"] = key
+        df_list.append(df)
+
+    # Concatenate all DataFrames in the list into a single DataFrame
+    combined_df = pd.concat(df_list, ignore_index=True)
+
+    return combined_df
+
+
+dances_df = combine_dataframes_add_key_as_column(dance_dataframes)
+
+
 # Find suggested dance name from notes based on artist and song name
 def find_dance_via_name(song_name, artist_name, dance_dataframes):
     """Try to match a song based oon artist and song name to a dance from the notes"""
