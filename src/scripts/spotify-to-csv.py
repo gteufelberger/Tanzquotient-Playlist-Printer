@@ -171,8 +171,18 @@ def markdown_to_dict(text):
     return {display: url for display, url in links}
 
 
+def extract_tags(text: str):
+    """Extract tags from string"""
+    # Match tags like `#foo`, `#bar-123`, etc.
+    pattern = r"#\w[\w-]*"
+    # Return matches as a list
+    tags = re.findall(pattern, text)
+    return tags
+
+
 for dance_name, dance_df in dance_dataframes.items():
     dance_df["Links"] = dance_df["Links"].apply(markdown_to_dict)
+    dance_df["Tags"] = dance_df["Tags"].apply(extract_tags)
 
 
 # Find suggested dance name from notes based on artist and song name
