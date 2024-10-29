@@ -164,7 +164,6 @@ dance_dataframes = extract_tables_with_headers(markdown_content)
 
 def markdown_to_dict(text):
     """Converts Markdown links to dictionary with display text being the key and the URL being the value"""
-    print(f"{text=}")
     # Find all markdown links in the text
     links = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", text)
     # Create a dictionary from the links
