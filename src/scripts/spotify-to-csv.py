@@ -204,24 +204,27 @@ dances_df = combine_dataframes_add_key_as_column(dance_dataframes)
 
 
 # Find suggested dance name from notes based on artist and song name
-def find_dance_via_name(song_name, artist_name, dance_dataframes):
+def find_dance_via_name(song_name, artist_name, dances_df):
     """Try to match a song based oon artist and song name to a dance from the notes"""
-    for dance_name, df in dance_dataframes.items():
-        if ((df["Song"] == song_name) & (df["Artist"] == artist_name)).any():
-            return dance_name
+    matching_rows = dances_df[
+        (dances_df["Song"] == song_name) & (dances_df["Artist"] == artist_name)
+    ]
+
+    if not matching_rows.empty:
+        # Return the 'source' column of the first matching row
+        return matching_rows.iloc[0]["Dance"]
     return ""
 
 
-def find_dance_via_link(df, key, link):
+def find_dance_via_link(dances_df, key, link):
     """Try to match a song based on the Spotify link to a dance from the notes"""
-    for dance_name, df in dance_dataframes.items():
-        for index, row in df.iterrows():
-            links_dict = row["Links"]
-            # Check if Links is a dictionary and not empty
-            if isinstance(links_dict, dict) and links_dict:
-                # Check if the key exists and its value matches the link
-                if key in links_dict and links_dict[key] == link:
-                    return dance_name
+    for index, row in dances_df.iterrows():
+        links_dict = row["Links"]
+        # Check if Links is a dictionary and not empty
+        if isinstance(links_dict, dict) and links_dict:
+            # Check if the key exists and its value matches the link
+            if key in links_dict and links_dict[key] == link:
+                return row["Dance"]
     return ""
 
 
@@ -229,15 +232,13 @@ def find_dance_for_song(row):
 
     # Get dance based on Spotify link
     result_from_link = find_dance_via_link(
-        dance_dataframes,
+        dances_df,
         "Spotify",
         row["spotify_url"],
     )
 
     # Get dance based on song name and artist name
-    result_from_name = find_dance_via_name(
-        row["Track Name"], row["Artists"], dance_dataframes
-    )
+    result_from_name = find_dance_via_name(row["Track Name"], row["Artists"], dances_df)
 
     # Make sure that the two match if both were found
     if result_from_name != "" and result_from_link != "":
