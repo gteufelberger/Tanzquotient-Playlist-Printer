@@ -190,7 +190,7 @@ def combine_dataframes_add_key_as_column(dance_dataframes):
 
     # Iterate over the dictionary and add the key as a new column
     for key, df in dance_dataframes.items():
-        df["Dance"] = key
+        df["Suggested Dance"] = key
         df_list.append(df)
 
     # Concatenate all DataFrames in the list into a single DataFrame
@@ -211,7 +211,7 @@ def find_dance_via_name(song_name, artist_name, dances_df):
 
     if not matching_rows.empty:
         # Return the 'source' column of the first matching row
-        return matching_rows.iloc[0]["Dance"]
+        return matching_rows.iloc[0]["Suggested Dance"]
     return ""
 
 
@@ -223,7 +223,7 @@ def find_dance_via_link(dances_df, key, link):
         if isinstance(links_dict, dict) and links_dict:
             # Check if the key exists and its value matches the link
             if key in links_dict and links_dict[key] == link:
-                return row["Dance"]
+                return row["Suggested Dance"]
     return ""
 
 
