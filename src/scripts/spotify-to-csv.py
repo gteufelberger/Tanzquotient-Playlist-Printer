@@ -262,6 +262,8 @@ combined_filtered_df = matched_df[
         "Links",
     ]
 ]
+# Reset index
+combined_filtered_df = combined_filtered_df.reset_index(drop=True)
 
 
 # Function to calculate start times
