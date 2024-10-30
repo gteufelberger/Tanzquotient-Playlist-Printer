@@ -203,61 +203,65 @@ dances_df = combine_dataframes_add_key_as_column(dance_dataframes)
 
 
 # Find suggested dance name from notes based on artist and song name
-def find_dance_via_name(song_name, artist_name, dances_df):
+def match_on_name(songs_row, dances_row):
     """Try to match a song based oon artist and song name to a dance from the notes"""
-    matching_rows = dances_df[
-        (dances_df["Song"] == song_name) & (dances_df["Artist"] == artist_name)
-    ]
-
-    if not matching_rows.empty:
-        # Return the 'source' column of the first matching row
-        return matching_rows.iloc[0]["Suggested Dance"]
-    return ""
-
-
-def find_dance_via_link(dances_df, key, link):
-    """Try to match a song based on the Spotify link to a dance from the notes"""
-    for index, row in dances_df.iterrows():
-        links_dict = row["Links"]
-        # Check if Links is a dictionary and not empty
-        if isinstance(links_dict, dict) and links_dict:
-            # Check if the key exists and its value matches the link
-            if key in links_dict and links_dict[key] == link:
-                return row["Suggested Dance"]
-    return ""
-
-
-def find_dance_for_song(row, dances_df):
-
-    # Get dance based on Spotify link
-    result_from_link = find_dance_via_link(
-        dances_df,
-        "Spotify",
-        row["spotify_url"],
+    return (
+        songs_row["Track Name"] == dances_row["Song"]
+        and songs_row["Artists"] == dances_row["Artist"]
     )
 
+
+def match_on_link(songs_row, dances_row):
+    """Try to match a song based on the Spotify link to a dance from the notes"""
+    links_dict = dances_row["Links"]
+    # Check if Links is a dictionary and not empty
+    if isinstance(links_dict, dict) and links_dict:
+        # Check if the key exists and its value matches the link
+        key = "Spotify"
+        link = songs_row["spotify_url"]
+        if key in links_dict and links_dict[key] == link:
+            return True
+    return False
+
+
+def match_on_song(songs_row, dances_row):
+
+    # Get dance based on Spotify link
+    link_result = match_on_link(songs_row, dances_row)
     # Get dance based on song name and artist name
-    result_from_name = find_dance_via_name(row["Track Name"], row["Artists"], dances_df)
+    name_result = match_on_name(songs_row, dances_row)
 
-    # Make sure that the two match if both were found
-    if result_from_name != "" and result_from_link != "":
-        assert (
-            result_from_name == result_from_link
-        ), f"Mismatch {result_from_name=}{result_from_link=}"
-
-    if result_from_name != "":
-        return result_from_name
-
-    if result_from_link != "":
-        return result_from_link
-    return ""
+    # Return if either matched
+    return link_result or name_result
 
 
-# Add a new column for the dance name
-playlist_df["Suggested Dance"] = playlist_df.apply(
-    lambda row: find_dance_for_song(row, dances_df),
-    axis=1,
-)
+# Join dataframes on the dance using custom matching function and only keep relevant columns
+cross_joined_df = playlist_df.merge(dances_df, how="cross")
+matched_df = cross_joined_df[
+    cross_joined_df.apply(
+        lambda row: match_on_song(
+            row[["spotify_url", "Track Name", "Artists"]],
+            row[["Song", "Artist", "Links"]],
+        ),
+        axis=1,
+    )
+]
+combined_filtered_df = matched_df[
+    [
+        "Track Name",
+        "Artists",
+        "Duration (ms)",
+        "Duration (min:sec)",
+        "id",
+        "spotify_url",
+        "BPM",
+        "Notes",
+        "Tags",
+        "Count",
+        "Suggested Dance",
+        "Links",
+    ]
+]
 
 
 # Function to calculate start times
@@ -301,10 +305,10 @@ def calculate_start_times_aligned(df, start_time):
 
 
 # Calculate start times
-playlist_df["Start Time"] = calculate_start_times_aligned(
-    playlist_df, open_dancing_start_time
+combined_filtered_df["Start Time"] = calculate_start_times_aligned(
+    combined_filtered_df, open_dancing_start_time
 )
 
 # # %%
 # Save to CSV
-playlist_df.to_csv(output_csv_name, index=True, index_label="index")
+combined_filtered_df.to_csv(output_csv_name, index=True, index_label="index")
