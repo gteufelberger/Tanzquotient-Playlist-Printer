@@ -203,7 +203,7 @@ dances_df = combine_dataframes_add_key_as_column(dance_dataframes)
 
 
 # Find suggested dance name from notes based on artist and song name
-def match_on_name(songs_row, dances_row):
+def match_on_name(songs_row, dances_row) -> bool:
     """Try to match a song based oon artist and song name to a dance from the notes"""
     return (
         songs_row["Track Name"] == dances_row["Song"]
@@ -211,7 +211,7 @@ def match_on_name(songs_row, dances_row):
     )
 
 
-def match_on_link(songs_row, dances_row):
+def match_on_link(songs_row, dances_row) -> bool:
     """Try to match a song based on the Spotify link to a dance from the notes"""
     links_dict = dances_row["Links"]
     # Check if Links is a dictionary and not empty
@@ -224,7 +224,7 @@ def match_on_link(songs_row, dances_row):
     return False
 
 
-def match_on_song(songs_row, dances_row):
+def match_on_song(songs_row, dances_row) -> bool:
 
     # Get dance based on Spotify link
     link_result = match_on_link(songs_row, dances_row)
