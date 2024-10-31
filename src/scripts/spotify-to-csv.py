@@ -284,12 +284,13 @@ def calculate_start_times_aligned(df, start_time):
 
     added_break = False
     break_time = datetime.strptime("21:00", "%H:%M")
+    break_duration = timedelta(minutes=10)
 
     for index, row in df.iterrows():
         if (
             not added_break and current_time >= break_time
         ):  # Add extra time for a break, e.g. an announcement
-            current_time += timedelta(minutes=10)
+            current_time += break_duration
             added_break = True
 
         # Always print the first and last song's start time
