@@ -41,6 +41,8 @@ output_csv_name = "open-dancing-playlist.csv"
 markdown_notes_filename = "notes.md"
 # Start time of Open Dancing / the playlist
 open_dancing_start_time = datetime.strptime("20:20", "%H:%M")
+break_time = datetime.strptime("21:00", "%H:%M")
+break_duration = timedelta(minutes=10)
 
 # Get playlist details
 results = sp.playlist_tracks(playlist_id)
@@ -283,9 +285,6 @@ def calculate_start_times_aligned(df, start_time):
     ).replace(second=0, microsecond=0)
 
     added_break = False
-    break_time = datetime.strptime("21:00", "%H:%M")
-    break_duration = timedelta(minutes=10)
-
     for index, row in df.iterrows():
         if (
             not added_break and current_time >= break_time
