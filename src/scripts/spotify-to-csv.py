@@ -235,6 +235,14 @@ def match_on_song(songs_row, dances_row) -> bool:
     # Get dance based on song name and artist name
     name_result = match_on_name(songs_row, dances_row)
 
+    # Throw error if no link and only name
+    if name_result and not link_result:
+        print(f"{songs_row["Track Name"]=}")
+        print(f"{songs_row["Artists"]=}")
+        print(f"{dances_row["Links"]=}")
+        assert name_result
+        assert link_result
+
     # Return if either matched
     return link_result or name_result
 
