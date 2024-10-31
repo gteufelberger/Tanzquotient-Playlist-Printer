@@ -280,7 +280,48 @@ def slow_join_check_links(playlist_df, dances_df):
     return combined_filtered_df
 
 
+def fast_join_links_only(playlist_df, dances_df):
+    # Extract Spotify URL as key for more efficient merging
+    dances_df["spotify_url"] = dances_df["Links"].apply(lambda x: x.get("Spotify"))
+
+    # Filter potential matches based on these keys to reduce cross-join size
+    initial_match_df = playlist_df.merge(
+        dances_df,
+        on="spotify_url",
+    )
+
+    # Vectorize Spotify link matching
+    initial_match_df["link_match"] = initial_match_df.apply(
+        lambda row: row["spotify_url"] == row["spotify_url"],
+        axis=1,
+    )
+    # Filter where links match
+    final_matched_df = initial_match_df[initial_match_df["link_match"]]
+
+    # Select and rename columns as required
+    combined_filtered_df = final_matched_df[
+        [
+            "Track Name",
+            "Artists",
+            "Duration (ms)",
+            "Duration (min:sec)",
+            "id",
+            "spotify_url",
+            "BPM",
+            "Notes",
+            "Tags",
+            "Count",
+            "Suggested Dance",
+            "Links",
+        ]
+    ]
+    # Reset index
+    combined_filtered_df = combined_filtered_df.reset_index(drop=True)
+    return combined_filtered_df
+
+
 combined_filtered_df = slow_join_check_links(playlist_df, dances_df)
+combined_filtered_df = fast_join_links_only(playlist_df, dances_df)
 
 
 # Function to calculate start times
