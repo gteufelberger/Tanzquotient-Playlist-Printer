@@ -208,7 +208,7 @@ dances_df = combine_dataframes_add_key_as_column(dance_dataframes)
 
 # Find suggested dance name from notes based on artist and song name
 def match_on_name(songs_row, dances_row) -> bool:
-    """Try to match a song based oon artist and song name to a dance from the notes"""
+    """Try to match a song based on artist and song name to a dance from the notes"""
     return (
         songs_row["Track Name"] == dances_row["Song"]
         and songs_row["Artists"] == dances_row["Artist"]
