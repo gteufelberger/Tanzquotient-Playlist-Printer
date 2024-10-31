@@ -247,35 +247,40 @@ def match_on_song(songs_row, dances_row) -> bool:
     return link_result or name_result
 
 
-# Join dataframes on the dance using custom matching function and only keep relevant columns
-cross_joined_df = playlist_df.merge(dances_df, how="cross")
-matched_df = cross_joined_df[
-    cross_joined_df.apply(
-        lambda row: match_on_song(
-            row[["spotify_url", "Track Name", "Artists"]],
-            row[["Song", "Artist", "Links"]],
-        ),
-        axis=1,
-    )
-]
-combined_filtered_df = matched_df[
-    [
-        "Track Name",
-        "Artists",
-        "Duration (ms)",
-        "Duration (min:sec)",
-        "id",
-        "spotify_url",
-        "BPM",
-        "Notes",
-        "Tags",
-        "Count",
-        "Suggested Dance",
-        "Links",
+def slow_join_check_links(playlist_df, dances_df):
+    # Join dataframes on the dance using custom matching function and only keep relevant columns
+    cross_joined_df = playlist_df.merge(dances_df, how="cross")
+    matched_df = cross_joined_df[
+        cross_joined_df.apply(
+            lambda row: match_on_song(
+                row[["spotify_url", "Track Name", "Artists"]],
+                row[["Song", "Artist", "Links"]],
+            ),
+            axis=1,
+        )
     ]
-]
-# Reset index
-combined_filtered_df = combined_filtered_df.reset_index(drop=True)
+    combined_filtered_df = matched_df[
+        [
+            "Track Name",
+            "Artists",
+            "Duration (ms)",
+            "Duration (min:sec)",
+            "id",
+            "spotify_url",
+            "BPM",
+            "Notes",
+            "Tags",
+            "Count",
+            "Suggested Dance",
+            "Links",
+        ]
+    ]
+    # Reset index
+    combined_filtered_df = combined_filtered_df.reset_index(drop=True)
+    return combined_filtered_df
+
+
+combined_filtered_df = slow_join_check_links(playlist_df, dances_df)
 
 
 # Function to calculate start times
