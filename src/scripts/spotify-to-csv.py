@@ -330,6 +330,7 @@ class DanceStateMachine:
         self.dance_counts = defaultdict(int)
         self.errors = []
         self.block_count = 0
+        self.order_results = []
 
         # Define the state transitions
         self.add_transition(
@@ -467,12 +468,16 @@ class DanceStateMachine:
     def check_order(self, dances):
         current_state = dances[0]
         self.dance_counts[current_state] += 1
+        self.order_results.append(True)  # First dance has no transition to check
 
         for i, dance in enumerate(dances[1:], 1):
-            if dance not in self.graph[current_state]:
+            if dance in self.graph[current_state]:
+                self.order_results.append(True)
+            else:
                 self.errors.append(
                     f"Invalid transition from {current_state} to {dance} at position {i+1}"
                 )
+                self.order_results.append(False)
             self.dance_counts[dance] += 1
             if dance == "Salsa":
                 self.block_count += 1
@@ -556,10 +561,15 @@ def check_dance_order(df):
     state_machine.print_results()
     state_machine.visualize_graph()
 
+    # Create new dataframe with results
+    new_df = df.copy()
+    new_df["Is Correct Order"] = state_machine.order_results
+    return new_df
 
-# Check dance order
-check_dance_order(combined_filtered_df)
+
+# Check dance order and get new dataframe with checked results
+checked_df = check_dance_order(combined_filtered_df)
 
 # # %%
 # Save to CSV
-combined_filtered_df.to_csv(output_csv_name, index=True, index_label="index")
+checked_df.to_csv(output_csv_name, index=True, index_label="index")
