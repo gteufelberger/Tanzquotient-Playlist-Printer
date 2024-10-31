@@ -286,7 +286,6 @@ def calculate_start_times_aligned(df, start_time):
     break_time = datetime.strptime("21:00", "%H:%M")
 
     for index, row in df.iterrows():
-        print(f"{index=}")
         if (
             not added_break and current_time >= break_time
         ):  # Add extra time for a break, e.g. an announcement
