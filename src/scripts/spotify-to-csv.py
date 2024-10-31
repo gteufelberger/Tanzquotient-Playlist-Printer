@@ -320,11 +320,13 @@ combined_filtered_df["Start Time"] = calculate_start_times_aligned(
 
 # %%
 
+
 class DanceStateMachine:
     """
     A state machine and logic to check whether the songs and the corresponding dances fulfill the suggested order
     https://wiki.tanzquotient.org/open-dancing#OpenDancing-OpenDancing
     """
+
     def __init__(self):
         self.graph = defaultdict(list)
         self.dance_counts = defaultdict(int)
