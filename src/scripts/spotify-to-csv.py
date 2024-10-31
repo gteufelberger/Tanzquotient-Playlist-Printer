@@ -282,10 +282,16 @@ def calculate_start_times_aligned(df, start_time):
         current_time + timedelta(minutes=(15 - current_time.minute % 15))
     ).replace(second=0, microsecond=0)
 
+    added_break = False
+    break_time = datetime.strptime("21:00", "%H:%M")
+
     for index, row in df.iterrows():
         print(f"{index=}")
-        if index == 14:  # Add extra time for a break, e.g. an announcement
-            current_time += timedelta(minutes=5)
+        if (
+            not added_break and current_time >= break_time
+        ):  # Add extra time for a break, e.g. an announcement
+            current_time += timedelta(minutes=10)
+            added_break = True
 
         # Always print the first and last song's start time
         if index == 0 or index == len(df) - 1:
