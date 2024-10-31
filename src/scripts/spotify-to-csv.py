@@ -7,6 +7,9 @@ import re
 from markdown_it import MarkdownIt
 from IPython.display import display
 from datetime import datetime, timedelta
+import networkx as nx
+import matplotlib.pyplot as plt
+from collections import defaultdict
 
 # Load credentials
 with open("credentials.toml", "rb") as f:
@@ -314,6 +317,248 @@ def calculate_start_times_aligned(df, start_time):
 combined_filtered_df["Start Time"] = calculate_start_times_aligned(
     combined_filtered_df, open_dancing_start_time
 )
+
+# %%
+
+class DanceStateMachine:
+    """
+    A state machine and logic to check whether the songs and the corresponding dances fulfill the suggested order
+    https://wiki.tanzquotient.org/open-dancing#OpenDancing-OpenDancing
+    """
+    def __init__(self):
+        self.graph = defaultdict(list)
+        self.dance_counts = defaultdict(int)
+        self.errors = []
+        self.block_count = 0
+
+        # Define the state transitions
+        self.add_transition(
+            "Salsa",
+            "Bachata",
+            "English Waltz",
+            "English Tango",
+            "Viennese Waltz",
+            "Slow Fox",
+            "Quickstep",
+            "Discofox",
+            "Lindy Hop",
+            "Charleston",
+            "Samba",
+            "Cha Cha Cha",
+            "Rumba",
+            "Paso Doble",
+            "Jive",
+            "Tango Argentino",
+            "Kizomba / Zouk",
+            "Polka",
+            "Choreo",
+        )
+        self.add_transition(
+            "Salsa",
+            "Bachata",
+        )
+        self.add_transition(
+            "Bachata",
+            "English Waltz",
+        )
+        self.add_transition(
+            "English Waltz",
+            "English Tango",
+        )
+        self.add_transition(
+            "English Tango",
+            "Viennese Waltz",
+        )
+        self.add_transition(
+            "Viennese Waltz",
+            "Slow Fox",
+            "Quickstep",
+        )
+        self.add_transition(
+            "Slow Fox",
+            "Quickstep",
+        )
+        self.add_transition(
+            "Quickstep",
+            "Discofox",
+        )
+        self.add_transition(
+            "Discofox",
+            "Lindy Hop",
+            "Charleston",
+            "Samba",
+            "Cha Cha Cha",
+        )
+        self.add_transition(
+            "Lindy Hop",
+            "Samba",
+            "Cha Cha Cha",
+        )
+        self.add_transition(
+            "Charleston",
+            "Samba",
+            "Cha Cha Cha",
+        )
+        self.add_transition(
+            "Samba",
+            "Cha Cha Cha",
+        )
+        self.add_transition(
+            "Cha Cha Cha",
+            "Rumba",
+        )
+        self.add_transition(
+            "Rumba",
+            "Paso Doble",
+            "Jive",
+        )
+        self.add_transition(
+            "Paso Doble",
+            "Jive",
+        )
+        self.add_transition(
+            "Jive",
+            "Tango Argentino",
+            "Kizomba / Zouk",
+            "Polka",
+            "Salsa",
+            "Choreo",
+        )
+        self.add_transition(
+            "Tango Argentino",
+            "Kizomba / Zouk",
+            "Polka",
+            "Salsa",
+            "Choreo",
+        )
+        self.add_transition(
+            "Kizomba / Zouk",
+            "Polka",
+            "Salsa",
+        )
+        self.add_transition(
+            "Polka",
+            "Salsa",
+        )
+        self.add_transition(
+            "Choreo",
+            "Salsa",
+        )
+
+        # Define special rules
+        self.special_rules = {
+            "Slow Fox": {"frequency": "every_other", "max_count": None},
+            "Samba": {"frequency": "every_other", "max_count": None},
+            "Paso Doble": {"frequency": "every_other", "max_count": None},
+            "Lindy Hop": {"frequency": "at_least_once", "min_count": 1},
+            "Charleston": {"frequency": "once", "max_count": 1},
+            "Tango Argentino": {
+                "frequency": "few_times",
+                "min_count": 1,
+                "max_count": 5,
+            },
+            "Kizomba / Zouk": {"frequency": "maybe_once", "max_count": 1},
+            "Polka": {"frequency": "maybe_once_or_twice", "max_count": 2},
+        }
+
+    def add_transition(self, from_state, *to_states):
+        self.graph[from_state].extend(to_states)
+
+    def check_order(self, dances):
+        current_state = dances[0]
+        self.dance_counts[current_state] += 1
+
+        for i, dance in enumerate(dances[1:], 1):
+            if dance not in self.graph[current_state]:
+                self.errors.append(
+                    f"Invalid transition from {current_state} to {dance} at position {i+1}"
+                )
+            self.dance_counts[dance] += 1
+            if dance == "Salsa":
+                self.block_count += 1
+            current_state = dance
+
+    def check_special_rules(self):
+        for dance, rule in self.special_rules.items():
+            count = self.dance_counts[dance]
+            if rule["frequency"] == "every_other":
+                if count > (self.block_count + 1) // 2:
+                    self.errors.append(
+                        f"{dance} appeared too frequently ({count} times in {self.block_count} blocks)"
+                    )
+                if count < (self.block_count - 1) // 2:
+                    self.errors.append(
+                        f"{dance} appeared too rarely ({count} times in {self.block_count} blocks)"
+                    )
+            elif "min_count" in rule and count < rule["min_count"]:
+                self.errors.append(f"{dance} appeared too few times ({count})")
+            elif "max_count" in rule and count > rule["max_count"]:
+                self.errors.append(f"{dance} appeared too many times ({count})")
+
+    def print_results(self):
+        if self.errors:
+            print("The following errors were found:")
+            for error in self.errors:
+                print(f"- {error}")
+        else:
+            print("All requirements are met!")
+
+        print("\nDance counts:")
+        for dance, count in self.dance_counts.items():
+            print(f"{dance}: {count}")
+
+    def visualize_graph(self):
+        G = nx.DiGraph()
+        for from_state, to_states in self.graph.items():
+            for to_state in to_states:
+                G.add_edge(from_state, to_state)
+
+        pos = nx.shell_layout(G)
+        plt.figure(figsize=(20, 12))
+        nx.draw(
+            G,
+            pos,
+            with_labels=True,
+            node_color="lightblue",
+            node_size=3000,
+            font_size=10,
+            font_weight="bold",
+            arrows=True,
+            arrowsize=20,
+        )
+
+        # Add labels to edges
+        edge_labels = {(u, v): "" for (u, v) in G.edges()}
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8)
+
+        # Adjust node labels
+        nx.draw_networkx_labels(
+            G,
+            pos,
+            {
+                node: f'{node}\n{self.special_rules.get(node, {}).get("frequency", "")}'
+                for node in G.nodes()
+            },
+            font_size=8,
+        )
+
+        plt.title("Dance Transition Graph", fontsize=20)
+        plt.axis("off")
+        plt.tight_layout()
+        plt.show()
+
+
+def check_dance_order(df):
+    dances = df["Suggested Dance"].tolist()
+    state_machine = DanceStateMachine()
+    state_machine.check_order(dances)
+    state_machine.check_special_rules()
+    state_machine.print_results()
+    state_machine.visualize_graph()
+
+
+# Check dance order
+check_dance_order(combined_filtered_df)
 
 # # %%
 # Save to CSV
