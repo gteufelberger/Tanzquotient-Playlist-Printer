@@ -248,6 +248,7 @@ def match_on_song(songs_row, dances_row) -> bool:
 
 
 def slow_join_check_links(playlist_df, dances_df):
+    # TODO: drops rows from playlist dataframe if not in dances notes
     # Join dataframes on the dance using custom matching function and only keep relevant columns
     cross_joined_df = playlist_df.merge(dances_df, how="cross")
     matched_df = cross_joined_df[
@@ -287,6 +288,7 @@ def fast_join_links_only(playlist_df, dances_df):
     # Filter potential matches based on these keys to reduce cross-join size
     initial_match_df = playlist_df.merge(
         dances_df,
+        how='left',
         on="spotify_url",
     )
 
