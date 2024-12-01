@@ -288,7 +288,7 @@ def fast_join_links_only(playlist_df, dances_df):
     # Filter potential matches based on these keys to reduce cross-join size
     initial_match_df = playlist_df.merge(
         dances_df,
-        how='left',
+        how="left",
         on="spotify_url",
     )
 
