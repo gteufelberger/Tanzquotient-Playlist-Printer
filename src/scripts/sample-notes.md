@@ -67,9 +67,9 @@ The Dances here correspond to the list in the wiki: https://wiki.tanzquotient.or
 
 ### Viennese Waltz
 
-| Count | Song | Artist | BPM | Notes | Rtng | Tags | Links                                                            |
-| ----- | ---- | ------ | --- | ----- | ---- | ---- | ---------------------------------------------------------------- |
-|       |      |        |     |       |      |      |                                                                  |
+| Count | Song | Artist | BPM | Notes | Rtng | Tags | Links |
+| ----- | ---- | ------ | --- | ----- | ---- | ---- | ----- |
+|       |      |        |     |       |      |      |       |
 
 
 ### Slow Fox
@@ -88,9 +88,9 @@ The Dances here correspond to the list in the wiki: https://wiki.tanzquotient.or
 
 ### Discofox
 
-| Count | Song                                                                | Artist                                     | BPM | Notes                                                             | Rtng | Tags                                                        | Links                                                                                                                                               |
-| ----- | ------------------------------------------------------------------- | ------------------------------------------ | --- | ----------------------------------------------------------------- | ---- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1     | Gimme! Gimme! Gimme! (A Man After Midnight)                         | ABBA                                       |     |                                                                   |      |                                                             | [Spotify](https://open.spotify.com/track/3vkQ5DAB1qQMYO4Mr9zJN6)                                                                                    |
+| Count | Song                                        | Artist | BPM | Notes | Rtng | Tags | Links                                                            |
+| ----- | ------------------------------------------- | ------ | --- | ----- | ---- | ---- | ---------------------------------------------------------------- |
+| 1     | Gimme! Gimme! Gimme! (A Man After Midnight) | ABBA   |     |       |      |      | [Spotify](https://open.spotify.com/track/3vkQ5DAB1qQMYO4Mr9zJN6) |
 
 
 ### Lindy Hop
@@ -109,9 +109,9 @@ The Dances here correspond to the list in the wiki: https://wiki.tanzquotient.or
 
 ### Tango Argentino
 
-| Count | Song          | Artist                        | BPM | Notes                                                                         | Rtng | Tags | Links                                                            |
-| ----- | ------------- | ----------------------------- | --- | ----------------------------------------------------------------------------- | ---- | ---- | ---------------------------------------------------------------- |
-|       |               |                               |     |                                                                               |      |      |                                                                  |
+| Count | Song | Artist | BPM | Notes | Rtng | Tags | Links |
+| ----- | ---- | ------ | --- | ----- | ---- | ---- | ----- |
+|       |      |        |     |       |      |      |       |
 
 
 ### Polka
@@ -123,6 +123,6 @@ The Dances here correspond to the list in the wiki: https://wiki.tanzquotient.or
 
 ### Kizomba / Zouk
 
-| Count | Song       | Artist         | BPM | Notes                                        | Rtng | Tags | Links |
-| ----- | ---------- | -------------- | --- | -------------------------------------------- | ---- | ---- | ----- |
-|       |            |                |     |                                              |      |      |       |
+| Count | Song | Artist | BPM | Notes | Rtng | Tags | Links |
+| ----- | ---- | ------ | --- | ----- | ---- | ---- | ----- |
+|       |      |        |     |       |      |      |       |
