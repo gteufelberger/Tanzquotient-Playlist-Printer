@@ -402,6 +402,7 @@ class DanceStateMachine:
 
         # Define the state transitions
         self.add_transition(
+            "Intro",
             "Salsa",
             "Bachata",
             "English Waltz",
