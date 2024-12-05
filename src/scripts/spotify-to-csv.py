@@ -45,6 +45,7 @@ markdown_notes_filename = "notes.md"
 open_dancing_start_time = datetime.strptime("20:20", "%H:%M")
 break_time = datetime.strptime("21:00", "%H:%M")
 break_duration = timedelta(minutes=10)
+default_rating_value = 2
 
 # Get playlist details
 results = sp.playlist_tracks(playlist_id)
@@ -270,6 +271,7 @@ def slow_join_check_links(playlist_df, dances_df):
             "spotify_url",
             "BPM",
             "Notes",
+            "Rtng",
             "Tags",
             "Count",
             "Suggested Dance",
@@ -311,6 +313,7 @@ def fast_join_links_only(playlist_df, dances_df):
             "spotify_url",
             "BPM",
             "Notes",
+            "Rtng",
             "Tags",
             "Count",
             "Suggested Dance",
@@ -324,6 +327,13 @@ def fast_join_links_only(playlist_df, dances_df):
 
 combined_filtered_df = slow_join_check_links(playlist_df, dances_df)
 combined_filtered_df = fast_join_links_only(playlist_df, dances_df)
+
+# Add default ratings for empty cells
+combined_filtered_df["Rtng"] = (
+    combined_filtered_df["Rtng"]
+    .replace("", default_rating_value)
+    .fillna(default_rating_value)
+)
 
 
 # Function to calculate start times
