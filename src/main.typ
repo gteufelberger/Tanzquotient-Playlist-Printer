@@ -23,8 +23,8 @@
 ))
 
 
-#set page(header: locate(loc => {
-  if counter(page).at(loc).first() <= 1 [
+#set page(header: context {
+  if here().page() <= 1 [
     #set align(right)
     #stack(
         dir: ltr,
@@ -75,7 +75,7 @@
       )
     )
   ]
-}))
+})
 
 #pad(
   x: left_margin_change,
