@@ -1,0 +1,11 @@
+name: Compile check
+on: [push, pull_request]
+
+
+jobs:
+  compile-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: typst-community/setup-typst@v4
+    - run: typst compile src/main.typ
