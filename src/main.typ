@@ -1,4 +1,3 @@
-#import "@preview/tablex:0.0.8": tablex, hlinex, vlinex
 #import "@preview/tiaoma:0.2.0"
 
 #let csv_file = "scripts/open-dancing-playlist.csv" // Update if necessary
@@ -46,11 +45,10 @@
     )
   ] else [
     #block(
-      inset: (top: -30pt),
-      tablex(
-        columns: (1fr, 1fr),
+      inset: (top: -30pt, left: left_margin_change),
+      grid(
+        columns: (0.9fr, auto),
         align: (left + horizon, right + horizon),
-        auto-lines: false,
         stack(
           dir: ttb,
           image(
