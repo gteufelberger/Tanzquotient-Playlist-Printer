@@ -75,6 +75,14 @@
   ]
 })
 
+// Colour links
+#show link: this => {
+  let label-color = green
+  let default-color = rgb("#ff66ff")
+
+  underline(text(blue)[#this])
+}
+
 #pad(
   x: left_margin_change,
   [
