@@ -2,6 +2,7 @@
 
 #let csv_file = "scripts/open-dancing-playlist.csv" // Update if necessary
 #let playlist_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" // Replace with link to actual playlist
+#let feedback_url = "https://example.com"
 
 #let default_left_margin = 71pt // Left margin size in pt for A4
 #let left_margin_change = 36pt // Width of first column
@@ -141,35 +142,28 @@
 
 #pad(
   x: left_margin_change,
-  // QR Code
-  stack(
-    dir: ltr,
-    spacing: 8pt,
-    tiaoma.barcode(
-      playlist_url,
-      "QRCode",
-      options: (
-        scale: 1.5,
+  grid(
+    columns: (auto, auto, auto, auto),
+    rows: (auto, auto, auto),
+    gutter: 15pt,
+
+    grid.cell(
+      rowspan: 2,
+      tiaoma.barcode(
+        playlist_url,
+        "QRCode",
+        options: (
+          scale: 1.5,
+        ),
       ),
     ),
-    text(
-      [
-        #text(
-          size: 20pt,
-          [*Playlist*]
-        )
-        \
-        \
-        #text(
-          size: 13pt, // Slightly larger link text
-          fill: blue,
-          [
-            #underline[
-              #link(playlist_url)
-            ]
-          ]
-        )
-      ]
+    text(size: 20pt, [*Playlist*]),
+    text(size: 20pt, [*Feedback & Song requests*]),
+    grid.cell(
+      rowspan: 2,
+      tiaoma.barcode(feedback_url,"QRCode",options: (scale: 1.5,),),
     ),
-  ),
+    link(playlist_url),
+    link(feedback_url),
+  )
 )
