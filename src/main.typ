@@ -3,6 +3,7 @@
 #let csv_file = "scripts/open-dancing-playlist.csv" // Update if necessary
 #let playlist_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" // Replace with link to actual playlist
 #let feedback_url = "https://example.com"
+#let debug_mode = false
 
 #let default_left_margin = 71pt // Left margin size in pt for A4
 #let left_margin_change = 36pt // Width of first column
@@ -103,7 +104,8 @@
   csv_file
 )
 #show table.cell.where(y: 0): strong
-#table(
+#if debug_mode {
+table(
   fill: (x, y) =>
     if x != 0 {
       if y == 0 { rgb("d9d9d9") }
@@ -116,14 +118,14 @@
   columns:
     (
       auto,
-      // auto, // Comment in for Playlist index
+      auto,
       auto,
       auto,
       auto,
       auto,
     ),
     [Time],
-    // [Nr.], // Comment in for Playlist index
+    [Nr.],
     [Duration],
     [Title],
     [Artist],
@@ -131,7 +133,7 @@
   ..results.map(
       v => (
         [#v.at("Start Time")],
-        // [#v.at("index")], // Comment in for Playlist index
+        [#v.at("index")],
         [#v.at("Duration (min:sec)")],
         [#v.at("Track Name")],
         [#v.at("Artists")],
@@ -139,6 +141,41 @@
       )
     ).flatten(),
 )
+} else {
+table(
+  fill: (x, y) =>
+    if x != 0 {
+      if y == 0 { rgb("d9d9d9") }
+      else if calc.even(y) { rgb("f3f3f3") }
+    },
+  inset: 7pt,
+  stroke: (x, y) =>
+    if x == 0 { none }
+    else { 1pt },
+  columns:
+        (
+          auto,
+          auto,
+          auto,
+          auto,
+          auto,
+        ),
+    [Time],
+    [Duration],
+    [Title],
+    [Artist],
+    [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style!]],
+  ..results.map(
+      v => (
+        [#v.at("Start Time")],
+        [#v.at("Duration (min:sec)")],
+        [#v.at("Track Name")],
+        [#v.at("Artists")],
+        [#v.at("Suggested Dance")],
+      )
+    ).flatten(),
+)
+}
 
 #pad(
   x: left_margin_change,
