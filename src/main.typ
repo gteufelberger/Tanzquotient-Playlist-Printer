@@ -129,7 +129,7 @@ table(
     [Duration],
     [Title],
     [Artist],
-    [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style!]],
+    [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style! 💃🕺]],
   ..results.map(
       v => (
         [#v.at("Start Time")],
@@ -164,7 +164,7 @@ table(
     [Duration],
     [Title],
     [Artist],
-    [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style!]],
+    [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style! 💃🕺]],
   ..results.map(
       v => (
         [#v.at("Start Time")],
