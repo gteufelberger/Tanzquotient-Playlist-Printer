@@ -98,6 +98,33 @@
   size: 9pt,
 )
 
+/// Linear interpolation helper function
+#let interpolate(value, min, max, start, end) = {
+  let t = (value - min) / (max - min);
+  let t = if t < 0 { 0 } else if t > 1 { 1 } else { t };
+  start + t * (end - start)
+}
+
+/// Linearly map number to colour within some range
+#let map_to_color(number, min, max, start_rgb, end_rgb) = {
+  let r = interpolate(number, min, max, start_rgb.at(0), end_rgb.at(0));
+  let g = interpolate(number, min, max, start_rgb.at(1), end_rgb.at(1));
+  let b = interpolate(number, min, max, start_rgb.at(2), end_rgb.at(2));
+  rgb(r * 100%, g * 100%, b * 100%)
+}
+
+/// Parse ratings and colour cells accordingly
+#let parse_ratings = (value_string) => {
+  let value_int = int(value_string)
+  let min = 1
+  let max = 5
+
+  let start_rgb = (0.5, 0, 0.5)
+  let end_rgb = (1, 0.84, 0)
+  let my_color = map_to_color(value_int, min, max, start_rgb, end_rgb)
+  table.cell(fill: my_color, value_string)
+}
+
 #let mycounter = counter("mycounter")
 #let results = csv(
   row-type: dictionary,
@@ -123,6 +150,7 @@ table(
       auto,
       auto,
       auto,
+      auto,
     ),
     [Time],
     [Nr.],
@@ -130,6 +158,7 @@ table(
     [Title],
     [Artist],
     [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style! 💃🕺]],
+    [Rating],
   ..results.map(
       v => (
         [#v.at("Start Time")],
@@ -138,6 +167,7 @@ table(
         [#v.at("Track Name")],
         [#v.at("Artists")],
         [#v.at("Suggested Dance")],
+        [#parse_ratings(v.at("Rtng"))],
       )
     ).flatten(),
 )
