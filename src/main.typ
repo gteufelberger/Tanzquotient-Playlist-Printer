@@ -98,6 +98,25 @@
   size: 9pt,
 )
 
+/// Turns a string describing a boolean into an actual boolean type
+#let bool_to_bool = (bool_string) => {
+  if bool_string == "True" {
+    true
+  } else {
+    false
+  }
+}
+
+/// Highlights the cell green or red with corresponding icon based on boolean value
+#let highlight_correct_order = (my_bool) => {
+  if my_bool {
+    table.cell(fill: green, emoji.checkmark)
+  } else {
+    // emoji.crossmark
+    table.cell(fill: red, "X")
+  }
+}
+
 /// Linear interpolation helper function
 #let interpolate(value, min, max, start, end) = {
   let t = (value - min) / (max - min);
@@ -151,6 +170,7 @@ table(
       auto,
       auto,
       auto,
+      auto,
     ),
     [Time],
     [Nr.],
@@ -159,6 +179,7 @@ table(
     [Artist],
     [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style! 💃🕺]],
     [Rating],
+    [Order],
   ..results.map(
       v => (
         [#v.at("Start Time")],
@@ -168,6 +189,7 @@ table(
         [#v.at("Artists")],
         [#v.at("Suggested Dance")],
         [#parse_ratings(v.at("Rtng"))],
+        [#highlight_correct_order(bool_to_bool(v.at("Is Correct Order")))]
       )
     ).flatten(),
 )
