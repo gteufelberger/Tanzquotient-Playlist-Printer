@@ -560,7 +560,7 @@ class DanceStateMachine:
                 self.order_results.append(True)
             else:
                 self.errors.append(
-                    f"Invalid transition from {current_state} to {dance} at position {i+1}"
+                    f"Invalid transition from {current_state} to {dance} at position {i + 1}"
                 )
                 self.order_results.append(False)
             self.dance_counts[dance] += 1
@@ -626,7 +626,7 @@ class DanceStateMachine:
             G,
             pos,
             {
-                node: f'{node}\n{self.special_rules.get(node, {}).get("frequency", "")}'
+                node: f"{node}\n{self.special_rules.get(node, {}).get('frequency', '')}"
                 for node in G.nodes()
             },
             font_size=8,
