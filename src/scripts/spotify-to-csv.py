@@ -407,8 +407,6 @@ class DanceStateMachine:
         # Define the state transitions
         self.add_transition(
             "Intro",
-            "Salsa",
-            "Bachata",
             "English Waltz",
             "English Tango",
             "Viennese Waltz",
@@ -422,18 +420,12 @@ class DanceStateMachine:
             "Rumba",
             "Paso Doble",
             "Jive",
+            "Salsa",
+            "Bachata",
             "Tango Argentino",
             "Kizomba / Zouk",
             "Polka",
             "Choreo",
-        )
-        self.add_transition(
-            "Salsa",
-            "Bachata",
-        )
-        self.add_transition(
-            "Bachata",
-            "English Waltz",
         )
         self.add_transition(
             "English Waltz",
@@ -458,20 +450,22 @@ class DanceStateMachine:
         )
         self.add_transition(
             "Discofox",
+            "Westcoast Swing",
             "Lindy Hop",
             "Charleston",
             "Samba",
-            "Cha Cha Cha",
+        )
+        self.add_transition(
+            "Westcoast Swing",
+            "Samba",
         )
         self.add_transition(
             "Lindy Hop",
             "Samba",
-            "Cha Cha Cha",
         )
         self.add_transition(
             "Charleston",
             "Samba",
-            "Cha Cha Cha",
         )
         self.add_transition(
             "Samba",
@@ -492,27 +486,31 @@ class DanceStateMachine:
         )
         self.add_transition(
             "Jive",
+            "Salsa",
+        )
+        self.add_transition(
+            "Salsa",
+            "Bachata",
+        )
+        self.add_transition(
+            "Bachata",
+            "English Waltz",
+            "Choreo",
+            "Polka",
             "Tango Argentino",
             "Kizomba / Zouk",
-            "Polka",
-            "Salsa",
+        )
+        self.add_transition(
             "Choreo",
+            "English Waltz",
+        )
+        self.add_transition(
+            "Polka",
+            "English Waltz",
         )
         self.add_transition(
             "Tango Argentino",
-            "Kizomba / Zouk",
-            "Polka",
-            "Salsa",
-            "Choreo",
-        )
-        self.add_transition(
-            "Kizomba / Zouk",
-            "Polka",
-            "Salsa",
-        )
-        self.add_transition(
-            "Polka",
-            "Salsa",
+            "English Waltz",
         )
         self.add_transition(
             "Choreo",
