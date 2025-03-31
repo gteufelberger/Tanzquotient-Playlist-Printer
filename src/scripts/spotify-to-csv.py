@@ -430,38 +430,31 @@ class DanceStateMachine:
         self.add_transition(
             "Salsa",
             "Bachata",
-            "Outro",
         )
         self.add_transition(
             "Bachata",
             "English Waltz",
-            "Outro",
         )
         self.add_transition(
             "English Waltz",
             "English Tango",
-            "Outro",
         )
         self.add_transition(
             "English Tango",
             "Viennese Waltz",
-            "Outro",
         )
         self.add_transition(
             "Viennese Waltz",
             "Slow Fox",
             "Quickstep",
-            "Outro",
         )
         self.add_transition(
             "Slow Fox",
             "Quickstep",
-            "Outro",
         )
         self.add_transition(
             "Quickstep",
             "Discofox",
-            "Outro",
         )
         self.add_transition(
             "Discofox",
@@ -469,40 +462,33 @@ class DanceStateMachine:
             "Charleston",
             "Samba",
             "Cha Cha Cha",
-            "Outro",
         )
         self.add_transition(
             "Lindy Hop",
             "Samba",
             "Cha Cha Cha",
-            "Outro",
         )
         self.add_transition(
             "Charleston",
             "Samba",
             "Cha Cha Cha",
-            "Outro",
         )
         self.add_transition(
             "Samba",
             "Cha Cha Cha",
-            "Outro",
         )
         self.add_transition(
             "Cha Cha Cha",
             "Rumba",
-            "Outro",
         )
         self.add_transition(
             "Rumba",
             "Paso Doble",
             "Jive",
-            "Outro",
         )
         self.add_transition(
             "Paso Doble",
             "Jive",
-            "Outro",
         )
         self.add_transition(
             "Jive",
@@ -511,7 +497,6 @@ class DanceStateMachine:
             "Polka",
             "Salsa",
             "Choreo",
-            "Outro",
         )
         self.add_transition(
             "Tango Argentino",
@@ -524,7 +509,6 @@ class DanceStateMachine:
             "Kizomba / Zouk",
             "Polka",
             "Salsa",
-            "Outro",
         )
         self.add_transition(
             "Polka",
