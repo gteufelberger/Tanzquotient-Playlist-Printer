@@ -98,6 +98,18 @@
   size: 9pt,
 )
 
+/// Parse array formatted as string into actual array of strings
+#let parse_tags = (my_string) => {
+  my_string.trim("[").trim("]").split(", ").map((x) => x.trim("'"))
+}
+
+/// Replace tags with emojis
+#let tag_to_emoji = (tag) => {
+  tag = tag.replace("#fast", emoji.lightning)
+  tag = tag.replace("#rhythm-change", emoji.arrows.cycle)
+  tag
+}
+
 /// Turns a string describing a boolean into an actual boolean type
 #let bool_to_bool = (bool_string) => {
   if bool_string == "True" {
@@ -171,6 +183,7 @@ table(
       auto,
       auto,
       auto,
+      auto,
     ),
     [Time],
     [Nr.],
@@ -179,6 +192,7 @@ table(
     [Artist],
     [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style! 💃🕺]],
     [Rating],
+    [Tags],
     [Order],
   ..results.map(
       v => (
@@ -189,6 +203,7 @@ table(
         [#v.at("Artists")],
         [#v.at("Suggested Dance")],
         [#parse_ratings(v.at("Rtng"))],
+        [#parse_tags(v.at("Tags")).map((x) => tag_to_emoji(x)).join("")],
         [#highlight_correct_order(bool_to_bool(v.at("Is Correct Order")))]
       )
     ).flatten(),
