@@ -84,7 +84,11 @@ def create_playlist_dataframe(playlist_id):
         track_name = track["name"]
         artist_names = ", ".join([artist["name"] for artist in track["artists"]])
         id = track["id"]
-        spotify_url = track["external_urls"]["spotify"]
+        try:
+            spotify_url = track["external_urls"]["spotify"]
+        except KeyError:
+            spotify_url = ""
+
         duration_ms = track["duration_ms"]
         duration_min_sec = ms_to_min_sec(duration_ms)
         track_list.append(
