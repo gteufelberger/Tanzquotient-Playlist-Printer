@@ -19,63 +19,63 @@
   ],
 )
 
-#set page(margin: (
-  top: 160pt
-))
+#set page(
+  margin: (
+    top: 160pt,
+  ),
+)
 
 
-#set page(header: context {
-  if here().page() <= 1 [
-    #set align(right)
-    #stack(
+#set page(
+  header: context {
+    if here().page() <= 1 [
+      #set align(right)
+      #stack(
         dir: ltr,
         spacing: 8pt,
-        text(
-          [
-            Tanzquotient Zürich (TQ)\
-            VSETH Commission\
-            Universitätstrasse 6\
-            8092 Zürich\
-            kontakt\@tanzquotient.org\
-            www.tanzquotient.org
-          ]
-        ),
+        text([
+          Tanzquotient Zürich (TQ)\
+          VSETH Commission\
+          Universitätstrasse 6\
+          8092 Zürich\
+          kontakt\@tanzquotient.org\
+          www.tanzquotient.org
+        ]),
         image(
           "assets/tanzquotient_logo.png",
-          height: 90pt
-        )
-    )
-  ] else [
-    #block(
-      inset: (top: -30pt, left: left_margin_change),
-      grid(
-        columns: (0.9fr, auto),
-        align: (left + horizon, right + horizon),
-        stack(
-          dir: ttb,
-          image(
-            "assets/vseth_logo_bunt.svg",
-            height: 40pt
-          ),
+          height: 90pt,
         ),
-        stack(
-          dir: ltr,
-          spacing: 8pt,
-          text(
-            [
+      )
+    ] else [
+      #block(
+        inset: (top: -30pt, left: left_margin_change),
+        grid(
+          columns: (0.9fr, auto),
+          align: (left + horizon, right + horizon),
+          stack(
+            dir: ttb,
+            image(
+              "assets/vseth_logo_bunt.svg",
+              height: 40pt,
+            ),
+          ),
+          stack(
+            dir: ltr,
+            spacing: 8pt,
+            text([
               *Tanzquotient Zürich (TQ)*\
               VSETH Commission
-            ]
-          ),
-          image(
-            "assets/tanzquotient_logo.png",
-            height: 30pt
+            ]),
+            image(
+              "assets/tanzquotient_logo.png",
+              height: 30pt,
+            ),
           ),
         ),
       )
-    )
-  ]
-})
+    ]
+  },
+)
 
 // Colour links
 #show link: this => {
@@ -94,24 +94,22 @@
 )
 
 // Set text size a bit smaller to fit everything
-#set text(
-  size: 9pt,
-)
+#set text(size: 9pt)
 
 /// Parse array formatted as string into actual array of strings
-#let parse_tags = (my_string) => {
-  my_string.trim("[").trim("]").split(", ").map((x) => x.trim("'"))
+#let parse_tags = my_string => {
+  my_string.trim("[").trim("]").split(", ").map(x => x.trim("'"))
 }
 
 /// Replace tags with emojis
-#let tag_to_emoji = (tag) => {
+#let tag_to_emoji = tag => {
   tag = tag.replace("#fast", emoji.lightning)
   tag = tag.replace("#rhythm-change", emoji.arrows.cycle)
   tag
 }
 
 /// Turns a string describing a boolean into an actual boolean type
-#let bool_to_bool = (bool_string) => {
+#let bool_to_bool = bool_string => {
   if bool_string == "True" {
     true
   } else {
@@ -120,7 +118,7 @@
 }
 
 /// Highlights the cell green or red with corresponding icon based on boolean value
-#let highlight_correct_order = (my_bool) => {
+#let highlight_correct_order = my_bool => {
   if my_bool {
     table.cell(fill: green, emoji.checkmark)
   } else {
@@ -131,21 +129,21 @@
 
 /// Linear interpolation helper function
 #let interpolate(value, min, max, start, end) = {
-  let t = (value - min) / (max - min);
-  let t = if t < 0 { 0 } else if t > 1 { 1 } else { t };
+  let t = (value - min) / (max - min)
+  let t = if t < 0 { 0 } else if t > 1 { 1 } else { t }
   start + t * (end - start)
 }
 
 /// Linearly map number to colour within some range
 #let map_to_color(number, min, max, start_rgb, end_rgb) = {
-  let r = interpolate(number, min, max, start_rgb.at(0), end_rgb.at(0));
-  let g = interpolate(number, min, max, start_rgb.at(1), end_rgb.at(1));
-  let b = interpolate(number, min, max, start_rgb.at(2), end_rgb.at(2));
+  let r = interpolate(number, min, max, start_rgb.at(0), end_rgb.at(0))
+  let g = interpolate(number, min, max, start_rgb.at(1), end_rgb.at(1))
+  let b = interpolate(number, min, max, start_rgb.at(2), end_rgb.at(2))
   rgb(r * 100%, g * 100%, b * 100%)
 }
 
 /// Parse ratings and colour cells accordingly
-#let parse_ratings = (value_string) => {
+#let parse_ratings = value_string => {
   let value_int = int(value_string)
   let min = 1
   let max = 5
@@ -159,22 +157,17 @@
 #let mycounter = counter("mycounter")
 #let results = csv(
   row-type: dictionary,
-  csv_file
+  csv_file,
 )
 #show table.cell.where(y: 0): strong
 #if debug_mode {
-table(
-  fill: (x, y) =>
-    if x != 0 {
-      if y == 0 { rgb("d9d9d9") }
-      else if calc.even(y) { rgb("f3f3f3") }
+  table(
+    fill: (x, y) => if x != 0 {
+      if y == 0 { rgb("d9d9d9") } else if calc.even(y) { rgb("f3f3f3") }
     },
-  inset: 7pt,
-  stroke: (x, y) =>
-    if x == 0 { none }
-    else { 1pt },
-  columns:
-    (
+    inset: 7pt,
+    stroke: (x, y) => if x == 0 { none } else { 1pt },
+    columns: (
       auto,
       auto,
       auto,
@@ -194,8 +187,8 @@ table(
     [Rating],
     [Tags],
     [Order],
-  ..results.map(
-      v => (
+    ..results
+      .map(v => (
         [#v.at("Start Time")],
         [#v.at("index")],
         [#v.at("Duration (min:sec)")],
@@ -203,45 +196,40 @@ table(
         [#v.at("Artists")],
         [#v.at("Suggested Dance")],
         [#parse_ratings(v.at("Rtng"))],
-        [#parse_tags(v.at("Tags")).map((x) => tag_to_emoji(x)).join("")],
-        [#highlight_correct_order(bool_to_bool(v.at("Is Correct Order")))]
-      )
-    ).flatten(),
-)
+        [#parse_tags(v.at("Tags")).map(x => tag_to_emoji(x)).join("")],
+        [#highlight_correct_order(bool_to_bool(v.at("Is Correct Order")))],
+      ))
+      .flatten(),
+  )
 } else {
-table(
-  fill: (x, y) =>
-    if x != 0 {
-      if y == 0 { rgb("d9d9d9") }
-      else if calc.even(y) { rgb("f3f3f3") }
+  table(
+    fill: (x, y) => if x != 0 {
+      if y == 0 { rgb("d9d9d9") } else if calc.even(y) { rgb("f3f3f3") }
     },
-  inset: 7pt,
-  stroke: (x, y) =>
-    if x == 0 { none }
-    else { 1pt },
-  columns:
-        (
-          auto,
-          auto,
-          auto,
-          auto,
-          auto,
-        ),
+    inset: 7pt,
+    stroke: (x, y) => if x == 0 { none } else { 1pt },
+    columns: (
+      auto,
+      auto,
+      auto,
+      auto,
+      auto,
+    ),
     [Time],
     [Duration],
     [Title],
     [Artist],
     [Dance#footnote[The dances mentioned here are just a suggestion. Feel free to add your own style! 💃🕺]],
-  ..results.map(
-      v => (
+    ..results
+      .map(v => (
         [#v.at("Start Time")],
         [#v.at("Duration (min:sec)")],
         [#v.at("Track Name")],
         [#v.at("Artists")],
         [#v.at("Suggested Dance")],
-      )
-    ).flatten(),
-)
+      ))
+      .flatten(),
+  )
 }
 
 #pad(
@@ -265,9 +253,9 @@ table(
     text(size: 20pt, [*Feedback & Song requests*]),
     grid.cell(
       rowspan: 2,
-      tiaoma.barcode(feedback_url,"QRCode",options: (scale: 1.5,),),
+      tiaoma.barcode(feedback_url, "QRCode", options: (scale: 1.5)),
     ),
     link(playlist_url),
     link(feedback_url),
-  )
+  ),
 )
