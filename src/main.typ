@@ -8,74 +8,61 @@
 #let default_left_margin = 71pt // Left margin size in pt for A4
 #let left_margin_change = 36pt // Width of first column
 
-#set page(
-  margin: (left: default_left_margin - left_margin_change),
-  footer: context [
-    #set align(center)
-    #counter(page).display(
-      "1 of 1",
-      both: true,
+#set page(margin: (left: default_left_margin - left_margin_change), footer: context [
+  #set align(center)
+  #counter(page).display(
+    "1 of 1",
+    both: true,
+  )
+])
+
+#set page(margin: (
+  top: 160pt,
+))
+
+
+#set page(header: context {
+  if here().page() <= 1 [
+    #set align(right)
+    #stack(
+      dir: ltr,
+      spacing: 8pt,
+      text([
+        Tanzquotient Zürich (TQ)\
+        VSETH Commission\
+        Universitätstrasse 6\
+        8092 Zürich\
+        kontakt\@tanzquotient.org\
+        www.tanzquotient.org
+      ]),
+      image(
+        "assets/tanzquotient_logo.png",
+        height: 90pt,
+      ),
     )
-  ],
-)
-
-#set page(
-  margin: (
-    top: 160pt,
-  ),
-)
-
-
-#set page(
-  header: context {
-    if here().page() <= 1 [
-      #set align(right)
-      #stack(
+  ] else [
+    #block(inset: (top: -30pt, left: left_margin_change), grid(
+      columns: (0.9fr, auto),
+      align: (left + horizon, right + horizon),
+      stack(dir: ttb, image(
+        "assets/vseth_logo_bunt.svg",
+        height: 40pt,
+      )),
+      stack(
         dir: ltr,
         spacing: 8pt,
         text([
-          Tanzquotient Zürich (TQ)\
-          VSETH Commission\
-          Universitätstrasse 6\
-          8092 Zürich\
-          kontakt\@tanzquotient.org\
-          www.tanzquotient.org
+          *Tanzquotient Zürich (TQ)*\
+          VSETH Commission
         ]),
         image(
           "assets/tanzquotient_logo.png",
-          height: 90pt,
+          height: 30pt,
         ),
-      )
-    ] else [
-      #block(
-        inset: (top: -30pt, left: left_margin_change),
-        grid(
-          columns: (0.9fr, auto),
-          align: (left + horizon, right + horizon),
-          stack(
-            dir: ttb,
-            image(
-              "assets/vseth_logo_bunt.svg",
-              height: 40pt,
-            ),
-          ),
-          stack(
-            dir: ltr,
-            spacing: 8pt,
-            text([
-              *Tanzquotient Zürich (TQ)*\
-              VSETH Commission
-            ]),
-            image(
-              "assets/tanzquotient_logo.png",
-              height: 30pt,
-            ),
-          ),
-        ),
-      )
-    ]
-  },
-)
+      ),
+    ))
+  ]
+})
 
 // Colour links
 #show link: this => {
@@ -85,13 +72,10 @@
   underline(text(blue)[#this])
 }
 
-#pad(
-  x: left_margin_change,
-  [
-    = Open Dancing DATE-HERE
-    == Playlist by AUTHOR-HERE
-  ],
-)
+#pad(x: left_margin_change, [
+  = Open Dancing DATE-HERE
+  == Playlist by AUTHOR-HERE
+])
 
 // Set text size a bit smaller to fit everything
 #set text(size: 9pt)
@@ -232,30 +216,17 @@
   )
 }
 
-#pad(
-  x: left_margin_change,
-  grid(
-    columns: (auto, auto, auto, auto),
-    rows: (auto, auto, auto),
-    gutter: 15pt,
+#pad(x: left_margin_change, grid(
+  columns: (auto, auto, auto, auto),
+  rows: (auto, auto, auto),
+  gutter: 15pt,
 
-    grid.cell(
-      rowspan: 2,
-      tiaoma.barcode(
-        playlist_url,
-        "QRCode",
-        options: (
-          scale: 1.5,
-        ),
-      ),
-    ),
-    text(size: 20pt, [*Playlist*]),
-    text(size: 20pt, [*Feedback & Song requests*]),
-    grid.cell(
-      rowspan: 2,
-      tiaoma.barcode(feedback_url, "QRCode", options: (scale: 1.5)),
-    ),
-    link(playlist_url),
-    link(feedback_url),
-  ),
-)
+  grid.cell(rowspan: 2, tiaoma.barcode(playlist_url, "QRCode", options: (
+    scale: 1.5,
+  ))),
+  text(size: 20pt, [*Playlist*]),
+  text(size: 20pt, [*Feedback & Song requests*]),
+  grid.cell(rowspan: 2, tiaoma.barcode(feedback_url, "QRCode", options: (scale: 1.5))),
+  link(playlist_url),
+  link(feedback_url),
+))
