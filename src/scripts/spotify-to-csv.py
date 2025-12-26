@@ -234,7 +234,6 @@ def match_on_link(songs_row, dances_row) -> bool:
 
 
 def match_on_song(songs_row, dances_row) -> bool:
-
     # Get dance based on Spotify link
     link_result = match_on_link(songs_row, dances_row)
     # Get dance based on song name and artist name
