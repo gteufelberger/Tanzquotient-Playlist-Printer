@@ -1,4 +1,4 @@
-#import "@preview/tiaoma:0.2.0"
+#import "@preview/tiaoma:0.3.0"
 
 #let csv_file = "scripts/open-dancing-playlist.csv" // Update if necessary
 #let playlist_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" // Replace with link to actual playlist
