@@ -16,4 +16,4 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["black>=24.4.2", "ipykernel>=6.29.4"]
+dev = ["ruff>=0.14.10", "ipykernel>=6.29.4"]
