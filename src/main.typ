@@ -8,6 +8,7 @@
 #let default_left_margin = 71pt // Left margin size in pt for A4
 #let left_margin_change = 36pt // Width of first column
 
+#set text(font: "DejaVu Sans")
 #set page(margin: (left: default_left_margin - left_margin_change), footer: context [
   #set align(center)
   #counter(page).display(
